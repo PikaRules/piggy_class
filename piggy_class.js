@@ -22,40 +22,59 @@
     };
 
     var BaseClass = function( className, parent ){
-        var _classname = className;
-        var _parent = parent;
-        this.getClassName = function(){
-            return _classname;
-        };
-        this.getParent = function(){
-            return _parent;
-        };
+        this._classname = 'BaseClass';
+        this._parent = parent;
+        this._super = this;
+        var self = this;
         this.processConfig = function ( config ) {
             addPropertiesToClassInstance(this, config);
         };
-        this.callsuper = function () {
-            var arg = arguments;
-            if ( this._parent !== 'Object' ) {
-                this._parent.apply(this, arg)
+    };
+
+    BaseClass.prototype.callSuperInitialize = function() {
+        if ( this._super.initialize ) {
+            this._super.initialize.apply(this,arguments);
+        }
+    }
+
+    BaseClass.prototype.toString = function(){
+        var temp = {};
+        var re = /\{(.|\s)+\}/gi;
+        for ( var prop in this ) {
+            if ( this[prop] ) {
+                if ( typeof(this[prop]) === 'function' ) {
+                    temp[prop] = this[prop].toString().replace(re, "{...}");
+                } else {
+                    temp[prop] = this[prop]
+                }
             }
         }
-    };
+        delete temp._super;
+        return this._classname + ' ' + JSON.stringify(temp); 
+    }
 
 
     //define a class
     var define = function ( className, params ) {
-        // new class
-        var Class = function(){
+        // class constructor
+        var Class = function ( config ) {
             Piggy.log( 'class ' + className + ' created' );
+            console.log( 'consturctor config : ')
+            console.log(config);
+            if ( this.initialize && config ) {
+                this.initialize(config);
+            }
         };
         Class.prototype.constructor = Class;
         //inherit from parent
         if ( params.parent ) {
-            var classParent = getClassConstructor(params.parent) || BaseClass;
-            Class.prototype = new classParent(className, params.parent);
+            var classParent = getClassConstructor(params.parent) || Object;
+            Class.prototype = new classParent();
         } else {
             Class.prototype = new BaseClass(className, 'Object');
         }
+        Class.prototype._classname = className;
+        Class.prototype._parent = params.parent || 'BaseClass';
         //add parameters to the class definition
         augment( Class, params )
         //add statics
@@ -65,11 +84,8 @@
         //add init
         if ( params.initialize ) {
             Class.prototype.initialize = function ( config ) {
+                console.log('aqui');
                 params.initialize.call(this, config);
-            }
-        } else {
-            Class.prototype.initialize = function ( config ) {
-                addPropertiesToClassInstance(this, config)
             }
         }
 
@@ -83,11 +99,10 @@
         var cls_constructor =  getClassConstructor(className);
         var cls_instance = {};
         if ( typeof(cls_constructor) === 'function' ) {
-            cls_instance = new cls_constructor();
+            cls_instance = new cls_constructor(config);
         } else {
             return {};
         }
-        cls_instance.initialize(config);
         return cls_instance;
     }
 
@@ -186,15 +201,18 @@
 
 Piggy.define('Vehiculo',{
     marca: 'vorder',
+    tienda: 'amapala',
     hablar: function(){
-        console.log('hhhh');
+        console.log('vvvvvvv');
+        console.log(this.name);
     },
     statics: {
         counter: 0
     },
     initialize: function(config){
-        this.processConfig(config);
-        console.log('que onda');
+        console.log('Vehiculo init');
+        console.log(config);
+        console.log(this.name);
     }
 });
 
@@ -207,17 +225,38 @@ Piggy.define('Auto',{
         console.log('runrunrun');
     },
     initialize: function(config){
-        console.log('init');
-        console.log(config);
+        console.log('auto init');
+        console.log(this.name);
         this.processConfig(config);
-        this.callsuper(config);
+        console.log(this.name);
+        this.callSuperInitialize({text:'que ondas'});
+        this._super.hablar();
+    },
+    hablar: function(){
+        console.log('aaaaaa');
     }
 });
 
-
+myv = Piggy.create('Vehiculo',{});
 myPokemon1 = Piggy.create('Auto',{
     name: 'pikachu'
 });
 
-console.log( myPokemon1 );
+myPokemon2 = Piggy.create('Auto',{
+    name: 'pikachu'
+});
 
+myPokemon3 = myPokemon1;
+myPokemon1.bato = function(cosa){ var mi = 'fdsfsdf'; };
+
+console.log( ' pk1 === pk2 :' + (myPokemon1 == myPokemon2).toString() );
+console.log( ' pk1 === pk3 :' + (myPokemon1 == myPokemon3).toString() );
+console.log(myv instanceof Auto);
+console.log( myPokemon1.toString() )
+console.log( myPokemon1.bato.arguments )
+
+//equals
+//mixins
+//override
+//alias
+//extend
