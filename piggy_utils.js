@@ -26,7 +26,7 @@
      * @author Guillermo Martel
      * @class CreateClassPath
      * @description creates the objects necessaries to add a class to a simulated path , class hierachy.
-     * @example  CreateClassPath( 'Components.Search.Base.BaseDisplayBox', { ... } );
+     * @example  createClassPath( 'root.app.MyClass', { ... } );
      */
     var createClassPath = function ( fullPath, classObject ) {
         
@@ -40,6 +40,8 @@
         
         if ( fullPath.indexOf(".") !== -1 ) {
             pathArray =  fullPath.split(".");
+        } else {
+            pathArray[0] = fullPath;
         }
 
         if ( pathArray.length > 0 ) {
@@ -100,7 +102,7 @@
 
 
     var log = function(message){
-        if ( Piggy.config.debug ) {
+        if ( Piggy.settings.debug ) {
             if ( isArray(message) ) {
                 for ( var i = 0; i < message.length; i++ ) {
                     console.log(message[i]);
@@ -113,10 +115,10 @@
 
 
     /**
-     * copy the items on properties on the base json
+     * copy the items of <properties> on the <base>
      * this overrides the items with the same name
-     * @param base <json>
-     * @param properties <json>
+     * @param base <object|json>
+     * @param properties <object|json>
      */
     var merge = function ( base, properties ) {
         var temp_base = {};
@@ -132,6 +134,15 @@
         }
         return temp_base;
     }
+
+    var isObjectEmpy = function(obj) {
+        for (var key in obj) {
+            if(obj.hasOwnProperty(key)) {
+                return false;
+            }
+        }
+      return true;
+    }
             
 
     namespace.Piggy.utils = {};
@@ -141,5 +152,6 @@
     namespace.Piggy.log = log;
     namespace.Piggy.utils.merge = merge;
     namespace.Piggy.utils.isArray = isArray;
+    namespace.Piggy.utils.isObjectEmpy = isObjectEmpy;
 
 })(window,document,undefined);

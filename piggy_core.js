@@ -8,14 +8,11 @@
 ;(function(namespace,document,undefined){
     'use strict';
 
-    var config = {
+    var settings = {
         debug: true
     };
 
-    var BaseObject = function(){};
-
     namespace.Piggy = namespace.Piggy || {};
-    namespace.Piggy.config = config;
-    namespace.Piggy.BaseObject = BaseObject;
+    namespace.Piggy.settings = settings;
 
 })(window,document,undefined);
