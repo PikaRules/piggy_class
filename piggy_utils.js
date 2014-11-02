@@ -80,37 +80,80 @@
             tempCont = namespace;
         }
 
-        for ( var x = 0; x < path.length; x++ ) {
-            if (tempCont[ path[x] ]) {
-                tempCont = tempCont[path[x]];
-            } else {
-                tempCont = null;
-            }
-        } 
+        try {
+            for ( var x = 0; x < path.length; x++ ) {
+                if (tempCont[ path[x] ]) {
+                    tempCont = tempCont[path[x]];
+                } else {
+                    tempCont = null;
+                }
+            } 
+        } catch (e) {
+            tempCont = null;
+        }
 
         if ( !tempCont ) {
-            console.error(  ' the class <' +  classPath + '> does not exists ' );
+            Piggy.logging.warning(  ' the class <' +  classPath + '> does not exists ' );
             return function(){};
         }
 
         if ( typeof(tempCont) !== 'function' ) {
-            console.error(' <' + classPath + '> is not a valid constructor, is seems to be a path');
+            Piggy.logging.warning(' <' + classPath + '> is not a valid constructor, is seems to be a path');
+            return function(){};
         }
 
         return tempCont;
     };
 
+    /**
+     * @param  {string} message
+     * @param  {string} type possible values : 'log'|'warning'|'error'>
+     */
+    var logging = function(message, type){
+        var warning = 'log';
+        var error = 'log';
 
-    var log = function(message){
+        //pollyfill logs
+        if ( console.warning ) {
+            warning = 'warning';
+        } else if ( console.warn ) {
+            warning = 'warn';
+        }
+
+        if ( console.error ) {
+            error = 'error';
+        }
+
+        //checking vallid types
+        var validTypes = {
+            'log': 'log',
+            'warning': warning,
+            'error': error
+        };
+        if ( !validTypes[type]) {
+            type = 'log';
+        } else {
+            type = validTypes[type];
+        }
         if ( Piggy.settings.debug ) {
             if ( isArray(message) ) {
                 for ( var i = 0; i < message.length; i++ ) {
-                    console.log(message[i]);
+                    console[type](message[i]);
                 }
             } else {
-                console.log(message);
+                console[type](message);
             }
         }
+    };
+
+    var loggingLog = function(message){
+        logging(message, 'log');
+    };
+    var loggingWarning = function(message){
+        logging(message, 'warning');
+    };
+    var loggingError = function(message){
+        logging(message, 'error');
     };
 
 
@@ -135,7 +178,17 @@
         return temp_base;
     }
 
-    var isObjectEmpy = function(obj) {
+    var isObjectNullOrEmpty = function(obj) {
+        if ( typeof(obj) === 'function' ) {
+            if ( obj.toString().trim() !== 'function (){}' && obj.toString().trim() !== 'function(){}') {
+                return false;
+            } else {
+                return true;
+            }
+        }
+        if ( !obj ) {
+            return true;
+        }
         for (var key in obj) {
             if(obj.hasOwnProperty(key)) {
                 return false;
@@ -145,13 +198,18 @@
     }
             
 
-    namespace.Piggy.utils = {};
-    namespace.Piggy.utils.createClassPath = createClassPath;
-    namespace.Piggy.utils.getClassConstructor = getClassConstructor;
-    namespace.Piggy.utils.log = log;
-    namespace.Piggy.log = log;
-    namespace.Piggy.utils.merge = merge;
-    namespace.Piggy.utils.isArray = isArray;
-    namespace.Piggy.utils.isObjectEmpy = isObjectEmpy;
+    createClassPath('Piggy.utils.createClassPath', createClassPath)
+    createClassPath('Piggy.utils.getClassConstructor', getClassConstructor)
+
+    createClassPath('Piggy.utils.logging.log', loggingLog)
+    createClassPath('Piggy.logging.log', loggingLog)
+    createClassPath('Piggy.utils.logging.warning', loggingWarning)
+    createClassPath('Piggy.logging.warning', loggingWarning)
+    createClassPath('Piggy.utils.logging.error', loggingError)
+    createClassPath('Piggy.logging.error', loggingError)
+
+    createClassPath('Piggy.utils.merge', merge)
+    createClassPath('Piggy.utils.isArray', isArray)
+    createClassPath('Piggy.utils.isObjectNullOrEmpty', isObjectNullOrEmpty)
 
 })(window,document,undefined);

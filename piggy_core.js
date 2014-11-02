@@ -14,5 +14,6 @@
 
     namespace.Piggy = namespace.Piggy || {};
     namespace.Piggy.settings = settings;
+    namespace.Piggy.aliases = {};
 
 })(window,document,undefined);
