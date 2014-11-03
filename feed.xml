@@ -4,10 +4,10 @@
     <title>PiggyClass</title>
     <description>Write an awesome description for your new site here. You can edit this line in _config.yml. It will appear in your document head meta (for Google search results) and in your feed.xml site description.
 </description>
-    <link>http://yourdomain.com/</link>
-    <atom:link href="http://yourdomain.com/feed.xml" rel="self" type="application/rss+xml" />
-    <pubDate>Sun, 02 Nov 2014 23:43:12 -0600</pubDate>
-    <lastBuildDate>Sun, 02 Nov 2014 23:43:12 -0600</lastBuildDate>
+    <link>http://pikarules.github.io/piggy_class/</link>
+    <atom:link href="http://pikarules.github.io/piggy_class/feed.xml" rel="self" type="application/rss+xml" />
+    <pubDate>Sun, 02 Nov 2014 23:50:58 -0600</pubDate>
+    <lastBuildDate>Sun, 02 Nov 2014 23:50:58 -0600</lastBuildDate>
     <generator>Jekyll v2.4.0</generator>
     
       <item>
@@ -28,8 +28,8 @@
 
 </description>
         <pubDate>Sun, 02 Nov 2014 11:21:30 -0600</pubDate>
-        <link>http://yourdomain.com/jekyll/update/2014/11/02/welcome-to-jekyll.html</link>
-        <guid isPermaLink="true">http://yourdomain.com/jekyll/update/2014/11/02/welcome-to-jekyll.html</guid>
+        <link>http://pikarules.github.io/piggy_class/jekyll/update/2014/11/02/welcome-to-jekyll.html</link>
+        <guid isPermaLink="true">http://pikarules.github.io/piggy_class/jekyll/update/2014/11/02/welcome-to-jekyll.html</guid>
         
         
         <category>jekyll</category>
@@ -43,8 +43,8 @@
         <description>&lt;p&gt;hola&lt;/p&gt;
 </description>
         <pubDate>Wed, 01 Jan 2014 00:00:00 -0600</pubDate>
-        <link>http://yourdomain.com/introduction/2014/01/01/getting_started.html</link>
-        <guid isPermaLink="true">http://yourdomain.com/introduction/2014/01/01/getting_started.html</guid>
+        <link>http://pikarules.github.io/piggy_class/introduction/2014/01/01/getting_started.html</link>
+        <guid isPermaLink="true">http://pikarules.github.io/piggy_class/introduction/2014/01/01/getting_started.html</guid>
         
         
         <category>introduction</category>
