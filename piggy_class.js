@@ -1,4 +1,4 @@
-/** 
+/**
  * @author Guillermo Martel
  * @email martelgames@gmail.com
  * @description class module
@@ -57,13 +57,16 @@
             }
         }
         delete temp._super;
-        return this._classname + ' ' + JSON.stringify(temp); 
+        return this._classname + ' ' + JSON.stringify(temp);
     };
 
 
 
     //define a class
     var define = function ( className, params ) {
+
+        params = params || {};
+
         // class constructor
         var Class = function ( config ) {
             Piggy.logging.log( 'class ' + className + ' created' );
@@ -164,7 +167,7 @@
                 if ( !isPrefedinedProperty(prop) ) {
                     classInstance[prop] = properties[prop];
                 }
-            } 
+            }
         }
     };
 
@@ -177,7 +180,7 @@
 
     /** copies all methos of the givingClass to the receivingClass
      *  only those methods that are not in the givingClass (does not override)
-     *  @param givingClass  <class constructor function | json | object | array > 
+     *  @param givingClass  <class constructor function | json | object | array >
      *                      function( recivingCLass, givingClass1, givinClass2,...)
      */
     var extend = function ( receivingClass ) {
@@ -198,7 +201,7 @@
                     } else {
                         //its a function (constructor)
                         extendFromConstructor(receivingClass ,args[i])
-                    } 
+                    }
                 }
             }
         }
@@ -268,7 +271,7 @@
                             }
                         }
                     }
-                } 
+                }
             }
         }
     }
@@ -277,7 +280,7 @@
     createClassPath('Piggy.create', create);
     createClassPath('Piggy.extend', extend);
     createClassPath('Piggy.override', override);
-    
+
 
 })(window,document,undefined);
 
